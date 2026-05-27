@@ -10,11 +10,10 @@ return new class extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('specialty');
-            $table->string('level');
+            $table->string('name', 100);
+            $table->string('specialty', 100);
+            $table->string('level', 100);
             $table->timestamps();
-
             $table->unique(['name', 'level', 'specialty']);
         });
     }
