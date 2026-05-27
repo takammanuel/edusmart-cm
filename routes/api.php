@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admin\BulletinController;
 use App\Http\Controllers\Api\Admin\ClassroomController;
 use App\Http\Controllers\Api\Admin\StudentController;
 use App\Http\Controllers\Api\Admin\TeacherController;
+use App\Http\Controllers\Api\Teacher\AbsenceController as TeacherAbsenceController;
 use App\Http\Controllers\Api\Teacher\GradeController as TeacherGradeController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,5 +38,9 @@ Route::prefix('v1')->group(function () {
     Route::prefix('teacher')->group(function () {
         Route::get('grades', [TeacherGradeController::class, 'index'])->name('teacher.grades.index');
         Route::post('grades/bulk', [TeacherGradeController::class, 'bulkStore'])->name('teacher.grades.bulk');
+
+        Route::get('absences', [TeacherAbsenceController::class, 'index'])->name('teacher.absences.index');
+        Route::post('absences/bulk', [TeacherAbsenceController::class, 'bulkStore'])->name('teacher.absences.bulk');
+        Route::patch('absences/{absence}', [TeacherAbsenceController::class, 'update'])->name('teacher.absences.update');
     });
 });
