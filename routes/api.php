@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Admin\ClassroomController;
 use App\Http\Controllers\Api\Admin\StudentController;
+use App\Http\Controllers\Api\Admin\TeacherController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -21,5 +22,9 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('students', StudentController::class);
         Route::post('students/{student}/transfer', [StudentController::class, 'transfer'])->name('students.transfer');
         Route::post('students/{student}/expel', [StudentController::class, 'expel'])->name('students.expel');
+
+        Route::apiResource('teachers', TeacherController::class);
+        Route::post('teachers/{teacher}/assignments', [TeacherController::class, 'assignClassroom'])->name('teachers.assignments.store');
+        Route::delete('teachers/{teacher}/assignments', [TeacherController::class, 'unassignClassroom'])->name('teachers.assignments.destroy');
     });
 });
