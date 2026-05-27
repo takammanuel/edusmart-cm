@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Admin\ClassroomController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -13,5 +13,9 @@ Route::prefix('v1')->group(function () {
                 'version' => '1.0.0',
             ],
         ]);
+    });
+
+    Route::prefix('admin')->group(function () {
+        Route::apiResource('classrooms', ClassroomController::class);
     });
 });
