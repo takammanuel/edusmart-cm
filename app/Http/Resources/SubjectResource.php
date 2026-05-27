@@ -14,6 +14,7 @@ class SubjectResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
+            'coefficient' => $this->coefficient,
         ];
     }
 }

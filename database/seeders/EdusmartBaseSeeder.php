@@ -11,12 +11,12 @@ class EdusmartBaseSeeder extends Seeder
     public function run(): void
     {
         $subjects = [
-            ['name' => 'Mathématiques', 'code' => 'MATH'],
-            ['name' => 'Français', 'code' => 'FR'],
-            ['name' => 'Anglais', 'code' => 'EN'],
-            ['name' => 'Physique', 'code' => 'PHY'],
-            ['name' => 'SVT', 'code' => 'SVT'],
-            ['name' => 'Histoire-Géographie', 'code' => 'HG'],
+            ['name' => 'Mathématiques', 'code' => 'MATH', 'coefficient' => 4],
+            ['name' => 'Français', 'code' => 'FR', 'coefficient' => 4],
+            ['name' => 'Anglais', 'code' => 'EN', 'coefficient' => 3],
+            ['name' => 'Physique', 'code' => 'PHY', 'coefficient' => 3],
+            ['name' => 'SVT', 'code' => 'SVT', 'coefficient' => 2],
+            ['name' => 'Histoire-Géographie', 'code' => 'HG', 'coefficient' => 2],
         ];
 
         foreach ($subjects as $subject) {

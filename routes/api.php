@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\BulletinController;
 use App\Http\Controllers\Api\Admin\ClassroomController;
 use App\Http\Controllers\Api\Admin\StudentController;
 use App\Http\Controllers\Api\Admin\TeacherController;
@@ -26,5 +27,9 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('teachers', TeacherController::class);
         Route::post('teachers/{teacher}/assignments', [TeacherController::class, 'assignClassroom'])->name('teachers.assignments.store');
         Route::delete('teachers/{teacher}/assignments', [TeacherController::class, 'unassignClassroom'])->name('teachers.assignments.destroy');
+
+        Route::get('students/{student}/bulletin', [BulletinController::class, 'showStudent'])->name('students.bulletin.show');
+        Route::get('students/{student}/bulletin/pdf', [BulletinController::class, 'downloadStudentPdf'])->name('students.bulletin.pdf');
+        Route::get('classrooms/{classroom}/bulletins', [BulletinController::class, 'showClassroom'])->name('classrooms.bulletins.index');
     });
 });
