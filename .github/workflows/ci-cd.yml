@@ -1,0 +1,15 @@
+name: "EDUSMART-CM CI/CD Pipeline"
+
+# Déclencheur manuel ajouté pour forcer le lancement
+on:
+  push:
+    branches: [ "develop", "main", "feature/*" ]
+  workflow_dispatch:
+
+jobs:
+  ci-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+      # ... (le reste de ton code)
