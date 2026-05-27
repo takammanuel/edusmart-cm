@@ -1,0 +1,39 @@
+name: "EDUSMART-CM CI/CD Pipeline"
+
+on:
+  push:
+    branches: [ "develop", "main", "feature/*" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+
+jobs:
+  ci-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, pdo, pdo_sqlite, zip
+          coverage: none
+
+      - name: Installer les dépendances
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Vérifier la syntaxe PHP (Lint)
+        run: find app config database routes -type f -name "*.php" -exec php -l {} \;
+
+      - name: Vérifier le style (Laravel Pint)
+        run: ./vendor/bin/pint --test
+
+      - name: Exécuter les tests unitaires
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan test
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ':memory:'
