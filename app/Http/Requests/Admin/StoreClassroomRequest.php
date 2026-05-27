@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Classroom;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreClassroomRequest extends FormRequest
@@ -45,7 +46,7 @@ class StoreClassroomRequest extends FormRequest
                 return;
             }
 
-            $exists = \App\Models\Classroom::query()
+            $exists = Classroom::query()
                 ->where('name', $this->input('name'))
                 ->where('level', $this->input('level'))
                 ->where('specialty', $this->input('specialty'))
