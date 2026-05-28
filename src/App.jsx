@@ -9,7 +9,13 @@ import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import StudentManagement from './pages/admin/StudentManagement';
 import TeacherManagement from './pages/admin/TeacherManagement';
-import ClassroomManagement from './pages/admin/ClassroomManagement'; // Nouvelle importation
+import ClassroomManagement from './pages/admin/ClassroomManagement';
+import AbsenceManagement from './pages/admin/AbsenceManagement';
+import DashboardController from './pages/admin/DashboardController';
+import SequenceManagement from './pages/admin/SequenceManagement';
+import SubjectManagement from './pages/admin/SubjectManagement';
+import BulletinManagement from './pages/admin/BulletinManagement';
+import TimeTableManagement from './pages/admin/TimeTableManagement';
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuth();
@@ -63,6 +69,12 @@ export default function App() {
             <Route path="students" element={<StudentManagement />} />
             <Route path="teachers" element={<TeacherManagement />} />
             <Route path="classrooms" element={<ClassroomManagement />} /> {/* Nouvelle Route de gestion des classes */}
+            <Route path="absences" element={<AbsenceManagement />} />
+            <Route path="pilotage" element={<DashboardController />} />
+            <Route path="sequences" element={<SequenceManagement />} />
+            <Route path="subjects" element={<SubjectManagement />} />
+            <Route path="bulletins" element={<BulletinManagement />} />
+            <Route path="timetables" element={<TimeTableManagement />} />
           </Route>
 
           {/* ---- ESPACE PRIVÉ : ENSEIGNANT ---- */}

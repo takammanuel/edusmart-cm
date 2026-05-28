@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import apiClient from '../services/api';
+import apiClient, { getStorageKey } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -8,40 +8,47 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('edu_token');
-    const savedUser = localStorage.getItem('edu_user');
+    // Utilise la même clé que api.js (getStorageKey) pour la cohérence
+    const token = localStorage.getItem(getStorageKey('token'));
+    const savedUser = localStorage.getItem(getStorageKey('user'));
 
     if (token && savedUser) {
-      apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setUser(JSON.parse(savedUser));
+      try {
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        setUser(JSON.parse(savedUser));
+      } catch {
+        // JSON corrompu — on nettoie
+        localStorage.removeItem(getStorageKey('token'));
+        localStorage.removeItem(getStorageKey('user'));
+      }
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
-    // Appel direct sur ton endpoint mis à jour : /v1/login
     const response = await apiClient.post('/login', { email, password });
     
-    // Ton backend renvoie : response.data.data = { token, user: { id, name, email, role } }
+    // Backend renvoie : response.data.data = { token, user: { id, name, email, role } }
     const { token, user: userData } = response.data.data;
 
-    localStorage.setItem('edu_token', token);
-    localStorage.setItem('edu_user', JSON.stringify(userData));
+    localStorage.setItem(getStorageKey('token'), token);
+    localStorage.setItem(getStorageKey('user'), JSON.stringify(userData));
     
     apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setUser(userData);
 
-    return userData; // Permet de récupérer le rôle dans l'écran de Login pour la redirection
+    return userData;
   };
 
   const logout = async () => {
     try {
-      await apiClient.post('/v1/logout');
+      // La baseURL inclut déjà /v1, donc l'endpoint est /logout (pas /v1/logout)
+      await apiClient.post('/logout');
     } catch (err) {
       console.warn("Déconnexion côté serveur impossible ou déjà expirée");
     } finally {
-      localStorage.removeItem('edu_token');
-      localStorage.removeItem('edu_user');
+      localStorage.removeItem(getStorageKey('token'));
+      localStorage.removeItem(getStorageKey('user'));
       delete apiClient.defaults.headers.common['Authorization'];
       setUser(null);
     }

@@ -41,21 +41,12 @@ export default function TeacherManagement() {
 
   const fetchInitialTools = async () => {
     try {
-      const clsData = await adminService.getClassrooms();
-      setClassrooms(clsData);
-      
-      // Si tu as un endpoint pour récupérer les matières :
-      // const subData = await adminService.getSubjects();
-      // setSubjects(subData);
-      
-      // Mock de secours si les matières ne viennent que via les relations
-      setSubjects([
-        { id: 1, name: 'Mathématiques' },
-        { id: 2, name: 'Informatique' },
-        { id: 3, name: 'Physique' },
-        { id: 4, name: 'Français' },
-        { id: 5, name: 'Anglais' }
+      const [clsData, subData] = await Promise.all([
+        adminService.getClassrooms(),
+        adminService.getSubjects(),
       ]);
+      setClassrooms(clsData);
+      setSubjects(subData);
     } catch (err) {
       console.error("Erreur de chargement des outils d'affectation", err);
     }
@@ -131,10 +122,14 @@ export default function TeacherManagement() {
 
   const openEditModal = (teacher) => {
     setCurrentTeacher(teacher);
+    // Le backend retourne teacher.user.name — on le split pour pré-remplir les champs
+    const nameParts = (teacher.user?.name || '').split(' ');
+    const lastName  = nameParts[0] || '';
+    const firstName = nameParts.slice(1).join(' ') || '';
     setFormData({
-      first_name: teacher.first_name,
-      last_name: teacher.last_name,
-      email: teacher.email,
+      first_name: firstName,
+      last_name: lastName,
+      email: teacher.user?.email || '',
       status: teacher.status || 'active'
     });
     setIsFormModalOpen(true);
@@ -212,8 +207,8 @@ export default function TeacherManagement() {
               <tbody className="divide-y divide-slate-50 text-sm text-slate-700">
                 {teachers.map((teacher) => (
                   <tr key={teacher.id} className="hover:bg-slate-50/50 transition">
-                    <td className="py-4 px-6 font-medium text-slate-900">{teacher.last_name} {teacher.first_name}</td>
-                    <td className="py-4 px-6 text-slate-500 text-xs font-mono">{teacher.email}</td>
+                    <td className="py-4 px-6 font-medium text-slate-900">{teacher.user?.name || '—'}</td>
+                    <td className="py-4 px-6 text-slate-500 text-xs font-mono">{teacher.user?.email || '—'}</td>
                     <td className="py-4 px-6">
                       <div className="flex flex-wrap gap-1.5 max-w-md">
                         {teacher.classrooms && teacher.classrooms.length > 0 ? (
@@ -313,7 +308,7 @@ export default function TeacherManagement() {
               <button onClick={() => setIsAssignModalOpen(false)} className="text-slate-400 hover:text-slate-600">✕</button>
             </div>
             <form onSubmit={handleAssignSubmit} className="p-6 space-y-4">
-              <p className="text-xs text-slate-500">Assigner une charge de cours à <strong>M./Mme {currentTeacher?.last_name}</strong>.</p>
+              <p className="text-xs text-slate-500">Assigner une charge de cours à <strong>M./Mme {currentTeacher?.user?.name || currentTeacher?.last_name}</strong>.</p>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 mb-1">Classe ciblée</label>
                 <select required value={assignData.classroom_id} onChange={(e) => setAssignData({...assignData, classroom_id: e.target.value})} className="w-full px-4 py-2 border border-slate-200 rounded-xl bg-white text-sm text-slate-800 focus:border-blue-500">

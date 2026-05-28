@@ -64,7 +64,7 @@ export default function PublicLayout({ children }) {
           >
             <div className="flex flex-col gap-4 font-medium text-slate-700">
               <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="py-2 hover:text-brand">Fonctionnalités</a>
-              <a href="#stats" onClick={() => setIsMiddleMenuOpen(false)} className="py-2 hover:text-brand">Statistiques</a>
+              <a href="#stats" onClick={() => setIsMobileMenuOpen(false)} className="py-2 hover:text-brand">Statistiques</a>
               <a href="#propos" onClick={() => setIsMobileMenuOpen(false)} className="py-2 hover:text-brand">À Propos</a>
               <button className="w-full flex items-center justify-center gap-2 bg-brand text-white py-3 rounded-xl font-semibold">
                 Espace Connexion

@@ -11,7 +11,7 @@ export default function ClassroomManagement() {
   const [formData, setFormData] = useState({
     level: '',
     name: '',
-    specialty: ''
+    section: ''
   });
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function ClassroomManagement() {
     try {
       await adminService.createClassroom(formData);
       setSuccessMessage("Classe ajoutée avec succès !");
-      setFormData({ level: '', name: '', specialty: '' });
+      setFormData({ level: '', name: '', section: '' });
       setIsOpen(false);
       fetchClassrooms();
       setTimeout(() => setSuccessMessage(null), 3000);
@@ -82,7 +82,7 @@ export default function ClassroomManagement() {
                   <tr key={cls.id} className="hover:bg-slate-50/50 transition">
                     <td className="py-4 px-6 font-semibold text-blue-600">{cls.level}</td>
                     <td className="py-4 px-6 font-medium text-slate-900">{cls.name}</td>
-                    <td className="py-4 px-6 text-slate-500">{cls.specialty || 'Générale'}</td>
+                    <td className="py-4 px-6 text-slate-500">{cls.section || 'Générale'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -107,7 +107,7 @@ export default function ClassroomManagement() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1">Spécialité / Option (Optionnel)</label>
-                <input type="text" value={formData.specialty} onChange={(e) => setFormData({...formData, specialty: e.target.value})} className="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:border-blue-500 text-slate-800" placeholder="ex: C, D, TI, Espagnol"/>
+                <input type="text" value={formData.section} onChange={(e) => setFormData({...formData, section: e.target.value})} className="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:border-blue-500 text-slate-800" placeholder="ex: C, D, TI, Espagnol"/>
               </div>
               <div className="pt-4 flex justify-end gap-2 text-sm">
                 <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 border border-slate-200 text-slate-600 rounded-xl">Fermer</button>
